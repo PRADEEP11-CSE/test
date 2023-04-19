@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Dashboard</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+ </head>
+<body>
+  <nav class="navbar navbar-expand-lg" style="background-color: #FF9B01;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/" style="color:white">House Rental Service</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <th:block th:if="${role} =='user'">
+      <li class="nav-item">
+          <a class="nav-link active" style="color:green" aria-current="page" href="/user">Home</a>
+        </li>
+         
+      </th:block>
+
+      </ul>
+      <form class="d-flex" role="search" action="#" th:action=@{/searchHouse} method="post">
+       <div class="dropdown me-2">
+		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		     <i class="bi bi-funnel" style="color:white;"></i>
+		  </button>
+		  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+		    <button class="dropdown-item" type="button"><a href="/filter" style="color:black;text-decoration:none">Filter</a></button>
+		    
+		  </div>
+		</div>  
+        <input class="form-control me-2" type="search" placeholder="Search" name="searchKey" aria-label="Search">
+        <button class="btn btn-outline-success me-2" type="submit">Search</button>  
+        <div class="dropdown me-2">
+		  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		     <i class="bi bi-person-circle" style="color:white;"></i>
+		  </button>
+		  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+		    <button class="dropdown-item" type="button"><a href="/profile" style="color:black;text-decoration:none">Profile</a></button>
+		    
+		  </div>
+		</div>     
+        <button class="btn btn-primary me-2"><a href="/login" style="color:white;text-decoration:none">Logout</a></button>
+      </form>
+    </div>
+  </div>
+</nav><br>
+
+
+<div class="container">
+  <br>
+  <form class="row g-3" action="#" th:action=@{/applyFilters} method="post">
+  <div class="col-md-4">
+    <label class="form-label">City</label>
+   	<select name="city" class="form-control">
+	     <option th:value="null">Select City</option>
+    <option th:value="newyork">New York</option>
+    <option th:value="losangeles">Los Angeles</option>
+    <option th:value="chicago">Chicago</option>
+    <option th:value="houston">Houston</option>
+    <option th:value="sandiego">San Diego</option>
+    <option th:value="dallas">Dallas</option>
+    <option th:value="austin">Austin</option>
+    <option th:value="nashville">Nashville</option>
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label for="inputState" class="form-label">Move-In Date</label>
+    <input type="date" class="form-control" name ="moveInDate"/>
+  </div>
+  <div class="col-md-2" style="margin-top:47px">
+  
+   <button type="submit" class="btn btn-primary">Apply Filters</button>
+  </div>
+</form><hr>
+  <br>
+  <div class="row">
+
+<th:block th:each="house : ${houses}">
+
+ 			<div class="card col-3 mt-3" style="margin:20px;">
+                <div class="card-horizontal">
+                    
+                    <div class="card-body">
+                        <h4 class="card-title">
+                
+     						<th:block  th:text="${house.houseName}">
+     						</th:block>
+                        </h4>
+                        
+                    </div>
+                    <ul class="list-group list-group-flush">
+					     <li class="list-group-item"  >
+					    Number of Bedrooms:
+     						<th:block th:text="${house.noOfBedrooms}">
+     						</th:block>
+					    </li>
+					    
+					     <li class="list-group-item"  >
+					    Number of Bathrooms:
+     						<th:block th:text="${house.noOfBathrooms}">
+     						</th:block>
+					    </li>
+					    
+					    <li class="list-group-item"  >
+					    House Available From:
+     						<th:block th:text="${house.availableFrom}">
+     						</th:block>
+					    </li>
+					    
+					 
+					    
+  					</ul>
+				  <div class="card-body">
+				     <h5 class="card-title" >
+				     Rent:
+				     <th:block th:text="${house.houseRent}">
+				     </th:block>$ per month
+				     </h5>
+				    
+				  </div>
+                </div>
+                <div class="card-footer">
+                   
+	  			<a style="margin-bottom:10px;" class="btn btn-primary" th:href="@{'/viewHouse/' + ${house.Id}}">View More Details</a>
+			
+    				
+                </div>
+            </div>
+
+
+</th:block> 
+
+
+</div>
+</div>
+ <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
