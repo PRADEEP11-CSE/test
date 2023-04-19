@@ -1,106 +1,48 @@
 package com.hrs.app.service;
 
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.hrs.app.dao.AppointmentRepo;
-import com.hrs.app.dao.HouseRepo;
 import com.hrs.app.model.Appointment;
 import com.hrs.app.model.House;
+import com.hrs.app.model.MessageModel;
+import com.hrs.app.model.ReportOwnerModel;
+import com.hrs.app.model.ReportUserModel;
+import com.hrs.app.model.User;
 
-@Service
-public class OwnerService {
+public interface OwnerService {
 	
-	@Autowired
-	private HouseRepo houseRepo;
+	void saveHouse(House house);
 	
-	@Autowired
-	private AppointmentRepo appointmentRepo;
+	House getHouse();
 	
-	public void saveHouse(House house) {
-		
+	List<House> getAllHousesByEmail(String emailId);
 	
-		
-		House savedHouse = houseRepo.save(house);
-		
-		
-//		
-		
-		
-	}
-
-	public House getHouse() {
-		// TODO Auto-generated method stub
-		return houseRepo.findAll().get(0);
-	}
-
-	public List<House> getAllHousesByEmail(String emailId) {
-		// TODO Auto-generated method stub
-		List<House> houses = houseRepo.findAllByEmailId(emailId);
-		return houses;
-	}
-
-	public void deleteHouse(Long id) {
-		
-		houseRepo.deleteById(id);
-		
-		
-		
-	}
-
-	public House getHouseById(Long id) {
-		// TODO Auto-generated method stub
-		
-		House house = houseRepo.findHouseById(id);
-//		System.out.println(house.getHouseAddress());
-		return house;
-	}
+	void deleteHouse(Long id);
 	
-	public List<House> getAllHousesDetailsByEmail(String email) {
-		// TODO Auto-generated method stub
-		
-		List<House> houses = houseRepo.findAllByEmailId(email);
-		
-		
-		return houses;
-	}
+	House getHouseById(Long id);
 	
-	public House getHouseDetailsById(Long id) {
-		// TODO Auto-generated method stub
-		return houseRepo.findHouseById(id);
-	}
+	List<House> getAllHousesDetailsByEmail(String email);
 	
-	public void updateHouse(House house) {
-
-		
-		House savedHouse = houseRepo.save(house);
-		
-		
-		
-		
-	}
-
+	House getHouseDetailsById(Long id);
 	
+	void updateHouse(House house);
+	
+	List<Appointment> getAllAppointmentsByUserId(String email);
 
-	public List<Appointment> getAllAppointmentsByUserId(String email) {
-		
-		List<Appointment> appointments = new ArrayList<Appointment>();
-		
-		appointmentRepo.findAll().forEach(apt -> {
-			
-			houseRepo.findAll().forEach(house -> {
-				if(apt.getHouseId().equals(house.getId().toString()) && house.getHouseOwnerMail().equals(email)) {
-					appointments.add(apt);
-				}
-			});
+	List<User> getAllOwners();
 
-		});
-		
-		return appointments;
-	}
+	MessageModel getMsgById(Long id);
+
+	List<MessageModel> findAllMessages(String email);
+
+	void saveReport(ReportOwnerModel report);
+
+	void saveUserReport(ReportUserModel report);
+
+	List<User> getAllUsers();
+
+	void approve(Long id);
+
+	void reject(Long id);
+
 }
